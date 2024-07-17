@@ -52,29 +52,33 @@ class CountryFragment: Fragment() {
     }
 
     private fun fetchCountries() {
+
+        countryViewModel.spinnerVisibility.observe(viewLifecycleOwner) { visibility ->
+            binding.spinner.visibility = visibility
+        }
+
         lifecycleScope.launch {
             countryViewModel.getCountries().collect { command ->
                 when(command){
                     CountryFetchingStatus.Loading -> {
-                        toggleSpinner(View.VISIBLE)
+                        countryViewModel.setSpinnerVisibility(View.VISIBLE)
                         binding.spinner.visibility = View.VISIBLE
                     }
                     is CountryFetchingStatus.Error -> {
-                        toggleSpinner(View.GONE)
+                        countryViewModel.setSpinnerVisibility(View.GONE)
                         activity?.let{ act ->
                             Toast.makeText(act.applicationContext, getString(R.string.country_fetching_error), Toast.LENGTH_SHORT)
                         }
                     }
                     is CountryFetchingStatus.Success -> {
-                        toggleSpinner(View.GONE)
+                        countryViewModel.setSpinnerVisibility(View.GONE)
                         countryAdapter.updateCountries(command.countriesResponse)
                     }
                 }
             }
         }
+
     }
 
-    private fun toggleSpinner(visibility: Int){
-        binding.spinner.visibility = visibility
-    }
+
 }

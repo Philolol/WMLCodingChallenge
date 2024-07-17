@@ -1,5 +1,7 @@
 package com.example.androidcodingchallengewml.presentation.viewmodels
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.androidcodingchallengewml.data.network.models.Country
 import com.example.androidcodingchallengewml.data.repository.CountryRepository
@@ -7,6 +9,11 @@ import kotlinx.coroutines.flow.flow
 
 //Manually injecting CountryRepository into CountryViewModel
 class CountryViewModel(private val repo: CountryRepository = CountryRepository()): ViewModel() {
+
+    private val _spinnerVisibility = MutableLiveData<Int>()
+    val spinnerVisibility: LiveData<Int>
+        get() = _spinnerVisibility
+
     fun getCountries() = flow{
         emit(CountryFetchingStatus.Loading)
         try{
@@ -15,6 +22,10 @@ class CountryViewModel(private val repo: CountryRepository = CountryRepository()
         catch(e: Exception){
             emit(CountryFetchingStatus.Error(e))
         }
+    }
+
+    fun setSpinnerVisibility(visibility: Int) {
+        _spinnerVisibility.value = visibility
     }
 }
 
