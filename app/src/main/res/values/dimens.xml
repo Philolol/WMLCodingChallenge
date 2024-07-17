@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="country_card_margin">5dp</dimen>
+    <dimen name="country_card_item_name_and_region_margin">15dp</dimen>
+    <dimen name="country_card_item_top_margin">10dp</dimen>
+</resources>
